@@ -2,10 +2,7 @@ package generators;
 
 import person.appearance.Appearance;
 import person.appearance.EyesColor;
-import person.appearance.hair.Hair;
-import person.appearance.hair.LongHair;
-import person.appearance.hair.NoHair;
-import person.appearance.hair.ShortHair;
+import person.appearance.Hair;
 
 import java.util.HashMap;
 
@@ -63,12 +60,7 @@ public class AppearanceGenerator implements Generator<Appearance> {
 
     @Override
     public final Appearance buildResponse() {
-        Hair hair;
-        if (hairLength > 0) {
-            hair = (hairLength > 4) ? new LongHair(hairColor) : new ShortHair(hairColor);
-        } else {
-            hair = new NoHair();
-        }
+        Hair hair = new Hair(hairLength, hairColor);
         return new Appearance(eyes, hair);
     }
 }

@@ -1,7 +1,5 @@
 package person.appearance;
 
-import person.appearance.hair.Hair;
-
 public class Appearance {
 
     private final String eyes;

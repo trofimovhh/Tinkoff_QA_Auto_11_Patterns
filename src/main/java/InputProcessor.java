@@ -2,14 +2,26 @@ import generators.AppearanceGenerator;
 import generators.FioGenerator;
 import generators.PhoneGenerator;
 import generators.PhysGenerator;
+import person.Fio;
 import person.Person;
 import person.Phone;
 import person.Physical;
 import person.appearance.Appearance;
 
-public class InputProcessor {
+public final class InputProcessor {
+    private static InputProcessor instance;
 
-    public final String processInput(final String input) {
+    InputProcessor() {
+    }
+
+    public static InputProcessor getInstance() {
+        if (instance == null) {
+            instance = new InputProcessor();
+        }
+        return instance;
+    }
+
+    public String processInput(final String input) {
         String result;
 
         if (input.trim().matches("\\d{4}")) {
@@ -18,9 +30,7 @@ public class InputProcessor {
 
             final FioGenerator fioGenerator = new FioGenerator();
             fioGenerator.generateParams(intCode);
-            final String lastName = fioGenerator.getLastName();
-            final String firstName = fioGenerator.getFirstName();
-            final String middleName = fioGenerator.getMiddleName();
+            final Fio fio = fioGenerator.buildResponse();
 
             final PhysGenerator physGenerator = new PhysGenerator();
             physGenerator.generateParams(intCode);
@@ -37,12 +47,15 @@ public class InputProcessor {
                 phoneGenerator.generateParams(intCode);
                 phone = phoneGenerator.buildResponse();
             }
-
-            result = new Person(input,
-                    lastName, firstName, middleName,
-                    physical,
-                    appearance,
-                    phone).toString();
+            Person person = new Person.Builder(input)
+                    .withFirstName(fio.getFirstName())
+                    .withLastName(fio.getLastName())
+                    .withMiddleName(fio.getMiddleName())
+                    .withPhys(physical)
+                    .withAppearance(appearance)
+                    .withPhone(phone)
+                    .build();
+            result = person.toString();
         } else {
             result = "Неверный ввод.";
         }

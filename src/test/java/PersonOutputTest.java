@@ -10,6 +10,7 @@ public final class PersonOutputTest {
 
     private final InputProcessor processor = new InputProcessor();
 
+
     @ParameterizedTest
     @ValueSource(strings = {"", " ", "a", "1", "12", "123", "12345", "123a", "1 2"})
     void processInputInvalid(final String input) {
